@@ -1,7 +1,11 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWeatherData } from '../reducers/weatherSlice';
 
 export default function WeatherTableList() {
-  const selectedState = useSelector((state) => state.weather);
+  const selectedState = useSelector((state) => state.weather.value);
+  const dispatch = useDispatch();
 
-  return <>{selectedState}</>;
+  dispatch(fetchWeatherData('hello'));
+
+  return { selectedState };
 }
