@@ -1,17 +1,12 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import Spinner from 'react-bootstrap/Spinner';
 
-import {
-  useGetForecastDataQuery,
-  useGetGeocoderDataQuery,
-} from '../weatherApi';
+import { useGetForecastDataQuery } from '../weatherApi';
 
 export default function WeatherTableList() {
-  // const { data, error, isError, isLoading } =
-  // useGetGeocoderDataQuery('Fort Carson');
-  const { data, error, isError, isLoading } = useGetForecastDataQuery('Fort Collins');
+  const { data, error, isError, isLoading } = useGetForecastDataQuery('89');
 
-  console.log(data);
+  console.log(error);
 
   if (isLoading) {
     return (
@@ -21,12 +16,12 @@ export default function WeatherTableList() {
     );
   }
 
-  if (isError || data.length <= 0) {
+  if (isError || data === undefined) {
     return (
       <>
         {isError ? (
           <h1>
-            Error {error.status}: {error.data.message}
+            Error {error.status}: {error.data}
           </h1>
         ) : (
           <h1>Oops! An unexpected error occurred.</h1>

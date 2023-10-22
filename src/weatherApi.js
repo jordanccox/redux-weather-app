@@ -26,7 +26,14 @@ export const weatherApi = createApi({
 
           return forecastData;
         } catch (axiosError) {
-          return axiosError;
+          const err = axiosError;
+
+          return {
+            error: {
+              status: err.response?.status,
+              data: err.responsne?.data || err.message,
+            },
+          };
         }
       },
     }),
