@@ -9,7 +9,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import WeatherTable from './components/WeatherTable';
 
 function App() {
-  console.log(import.meta.env.VITE_API_KEY); // testing
+  // console.log(import.meta.env.VITE_API_KEY); // testing
 
   return (
     <Container fluid="md">
