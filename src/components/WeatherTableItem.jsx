@@ -1,9 +1,13 @@
 import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-sparklines';
+import {
+  Sparklines,
+  SparklinesLine,
+  SparklinesReferenceLine,
+} from 'react-sparklines';
 
 export default function WeatherTableItem(props) {
-  const cities = useSelector(state => state.weather.cities);
+  const cities = useSelector((state) => state.weather.cities);
   console.log(cities);
 
   return (

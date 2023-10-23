@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   cities: [],
+  currentSearch: '',
 };
 
 export const weatherSlice = createSlice({
@@ -11,9 +12,12 @@ export const weatherSlice = createSlice({
     addWeatherData: (state, action) => {
       state.cities.push(action.payload);
     },
+    searchForCity: (state, action) => {
+      state.currentSearch = action.payload;
+    },
   },
 });
 
-export const { addWeatherData } = weatherSlice.actions;
+export const { addWeatherData, searchForCity } = weatherSlice.actions;
 
 export default weatherSlice.reducer;

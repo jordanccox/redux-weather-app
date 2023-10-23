@@ -25,9 +25,10 @@ const findAverage = (weatherData, measurementType) => {
 export default function WeatherTableList() {
   const dispatch = useDispatch();
   // const cities = useSelector((state) => state.weather.cities);
+  const currentCity = useSelector((state) => state.weather.currentSearch);
 
   const { data, error, isError, isLoading } =
-    useGetForecastDataQuery('Florida');
+    useGetForecastDataQuery(currentCity);
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
@@ -43,8 +44,6 @@ export default function WeatherTableList() {
       dispatch(addWeatherData(forecastData));
     }
   }, [dispatch, isLoading, isError, data]);
-
-  console.log(data); // testing
 
   if (isLoading) {
     return (
@@ -67,8 +66,6 @@ export default function WeatherTableList() {
       </>
     );
   }
-
-  console.log('test');
 
   // TODOS:
 
