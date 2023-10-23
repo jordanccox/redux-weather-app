@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useGetForecastDataQuery } from '../weatherApi';
 import WeatherTableItem from './WeatherTableItem';
@@ -56,7 +56,7 @@ export default function WeatherTableList() {
     }
   }, [dispatch, isLoading, isError, data]);
 
-  const renderedCitiesList = renderData(cities);
+  const renderedCitiesList = useMemo(() => renderData(cities), cities);
 
   if (isLoading || isFetching) {
     return (

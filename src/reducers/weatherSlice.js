@@ -18,6 +18,6 @@ export const weatherSlice = createSlice({
   },
 });
 
-export const { addWeatherData, searchForCity, } = weatherSlice.actions;
+export const { addWeatherData, searchForCity } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
