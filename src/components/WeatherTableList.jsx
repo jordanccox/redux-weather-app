@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -56,10 +55,7 @@ export default function WeatherTableList() {
     }
   }, [dispatch, isLoading, isError, data]);
 
-  const renderedCitiesList = useMemo(
-    () => renderData(cities),
-    [cities, currentCity]
-  );
+  const renderedCitiesList = useMemo(() => renderData(cities), [cities]);
 
   if (isLoading || isFetching) {
     return (
