@@ -22,9 +22,12 @@ const findAverage = (weatherData, measurementType) => {
   return sum / 40;
 };
 
+const renderData = (citiesList) =>
+  citiesList.map((city, index) => <WeatherTableItem key={index} data={city} />);
+
 export default function WeatherTableList() {
   const dispatch = useDispatch();
-  // const cities = useSelector((state) => state.weather.cities);
+  const cities = useSelector((state) => state.weather.cities);
   const currentCity = useSelector((state) => state.weather.currentSearch);
 
   const { data, error, isError, isLoading } =
@@ -33,6 +36,7 @@ export default function WeatherTableList() {
   useEffect(() => {
     if (!isLoading && !isError && data) {
       const forecastData = {
+        // get some kind of unique id to prevent duplications
         city: data.city.name,
         tempsArray: populateDataArrays(data, 'temp'),
         avgTemp: findAverage(data, 'temp'),
@@ -67,6 +71,8 @@ export default function WeatherTableList() {
     );
   }
 
+  const renderedCitiesList = renderData(cities);
+
   // TODOS:
 
   // 1. Create another reducer for storing all the weather data after it is put in the forecastData object. (If i have time, normalize it as well)
@@ -79,5 +85,9 @@ export default function WeatherTableList() {
   //   return <WeatherTableItem
   // }
 
-  return <WeatherTableItem />;
+  return (
+    <div>
+    {renderedCitiesList}
+    </div>
+  );
 }
