@@ -85,8 +85,6 @@ export default function WeatherTableList() {
     );
   }
 
-  console.log(data);
-
   // const renderedCitiesList = renderData(cities);
 
   // TODOS:
