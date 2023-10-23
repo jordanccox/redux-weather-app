@@ -1,12 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import axios from 'axios';
 
 export const weatherApi = createApi({
   reducerPath: 'weatherApi',
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl: 'http://api.openweathermap.org/',
-  // }),
   endpoints: (builder) => ({
     getForecastData: builder.query({
       queryFn: async (city) => {

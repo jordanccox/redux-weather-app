@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 

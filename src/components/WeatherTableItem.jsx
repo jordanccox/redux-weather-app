@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Col, Row } from 'react-bootstrap';
 import {
   Sparklines,
@@ -13,9 +13,6 @@ const convertKelvinToFahrenheit = (tempInK) => {
 };
 
 export default function WeatherTableItem({ data }) {
-  // const cities = useSelector((state) => state.weather.cities);
-  // console.log(cities);
-
   const avgTempF = convertKelvinToFahrenheit(data.avgTemp);
 
   const avgPressure = Math.round(data.avgPressure);
@@ -49,3 +46,7 @@ export default function WeatherTableItem({ data }) {
     </Row>
   );
 }
+
+WeatherTableItem.propTypes = {
+  data: PropTypes.object,
+};

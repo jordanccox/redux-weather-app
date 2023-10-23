@@ -1,9 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-import Spinner from 'react-bootstrap/Spinner';
-
 import { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Spinner from 'react-bootstrap/Spinner';
 import { Col, Row } from 'react-bootstrap';
-import { useGetForecastDataQuery } from '../weatherApi';
+
+import { useGetForecastDataQuery } from '../reducers/weatherApi';
 import WeatherTableItem from './WeatherTableItem';
 import { addWeatherData } from '../reducers/weatherSlice';
 
@@ -38,7 +39,6 @@ export default function WeatherTableList() {
   useEffect(() => {
     if (!isLoading && !isError && data) {
       const forecastData = {
-        // get some kind of unique id to prevent duplications
         id: data.city.id,
         city: data.city.name,
         tempsArray: populateDataArrays(data, 'temp'),
@@ -53,7 +53,7 @@ export default function WeatherTableList() {
         dispatch(addWeatherData(forecastData));
       }
     }
-  }, [dispatch, isLoading, isError, data]);
+  }, [dispatch, isLoading, isError, data, cities]);
 
   const renderedCitiesList = useMemo(() => renderData(cities), [cities]);
 
@@ -83,20 +83,6 @@ export default function WeatherTableList() {
       </>
     );
   }
-
-  // const renderedCitiesList = renderData(cities);
-
-  // TODOS:
-
-  // 1. Create another reducer for storing all the weather data after it is put in the forecastData object. (If i have time, normalize it as well)
-  // 2. After forecast data is received, dispatch it to the citySearchReducer
-  // 3. To render the data, loop through all the state from the citySearchReducer, and pass that data to WeatherTableItem.\
-  // 4. Display data to page...
-  // 5. Function for handling search input
-
-  // const renderData = () => {
-  //   return <WeatherTableItem
-  // }
 
   return <div>{renderedCitiesList}</div>;
 }
