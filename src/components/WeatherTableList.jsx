@@ -56,7 +56,10 @@ export default function WeatherTableList() {
     }
   }, [dispatch, isLoading, isError, data]);
 
-  const renderedCitiesList = useMemo(() => renderData(cities), cities);
+  const renderedCitiesList = useMemo(
+    () => renderData(cities),
+    [cities, currentCity]
+  );
 
   if (isLoading || isFetching) {
     return (
