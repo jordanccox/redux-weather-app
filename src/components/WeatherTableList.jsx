@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { useEffect } from 'react';
+import { Row } from 'react-bootstrap';
 import { useGetForecastDataQuery } from '../weatherApi';
 import WeatherTableItem from './WeatherTableItem';
 import { addWeatherData } from '../reducers/weatherSlice';
@@ -23,20 +24,22 @@ const findAverage = (weatherData, measurementType) => {
 };
 
 const renderData = (citiesList) =>
-  citiesList.map((city, index) => <WeatherTableItem key={index} data={city} />);
+  citiesList
+    .map((city, index) => <WeatherTableItem key={index} data={city} />)
+    .reverse();
 
 export default function WeatherTableList() {
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.weather.cities);
   const currentCity = useSelector((state) => state.weather.currentSearch);
 
-  const { data, error, isError, isLoading } =
-    useGetForecastDataQuery(currentCity);
+  const { data, isError, isLoading } = useGetForecastDataQuery(currentCity);
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
       const forecastData = {
         // get some kind of unique id to prevent duplications
+        id: data.city.id,
         city: data.city.name,
         tempsArray: populateDataArrays(data, 'temp'),
         avgTemp: findAverage(data, 'temp'),
@@ -45,33 +48,43 @@ export default function WeatherTableList() {
         humidityArray: populateDataArrays(data, 'humidity'),
         avgHumidity: findAverage(data, 'humidity'),
       };
-      dispatch(addWeatherData(forecastData));
+
+      if (!cities.find((city) => city.id === forecastData.id)) {
+        dispatch(addWeatherData(forecastData));
+      }
     }
   }, [dispatch, isLoading, isError, data]);
 
+  const renderedCitiesList = renderData(cities);
+
   if (isLoading) {
     return (
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    );
-  }
-
-  if (isError || data === undefined) {
-    return (
       <>
-        {isError ? (
-          <h1>
-            Error {error.status}: {error.data}
-          </h1>
-        ) : (
-          <h1>Oops! An unexpected error occurred.</h1>
-        )}
+        <Row>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Row>
+        {/* <div>{renderedCitiesList}</div> */}
       </>
     );
   }
 
-  const renderedCitiesList = renderData(cities);
+  if (isError) {
+    return (
+      <>
+        <h4 className="bg-danger text-light pt-2 pb-2 text-center">
+          Oops! An unexpected error occurred. Please check your spelling and try
+          again.
+        </h4>
+        <div>{renderedCitiesList}</div>
+      </>
+    );
+  }
+
+  console.log(data);
+
+  // const renderedCitiesList = renderData(cities);
 
   // TODOS:
 
@@ -85,9 +98,5 @@ export default function WeatherTableList() {
   //   return <WeatherTableItem
   // }
 
-  return (
-    <div>
-    {renderedCitiesList}
-    </div>
-  );
+  return <div>{renderedCitiesList}</div>;
 }
