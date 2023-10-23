@@ -41,4 +41,4 @@ export const weatherApi = createApi({
   }),
 });
 
-export const { useGetGeocoderDataQuery, useGetForecastDataQuery } = weatherApi;
+export const { useGetForecastDataQuery } = weatherApi;

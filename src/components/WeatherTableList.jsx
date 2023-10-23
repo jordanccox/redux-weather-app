@@ -1,8 +1,11 @@
 /* eslint-disable react/jsx-no-useless-fragment */
+import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
+import { useEffect } from 'react';
 import { useGetForecastDataQuery } from '../weatherApi';
 import WeatherTableItem from './WeatherTableItem';
+import { addWeatherData } from '../reducers/weatherSlice';
 
 const populateDataArrays = (weatherData, measurementType, array = []) => {
   weatherData.list.forEach((item) => array.push(item.main[measurementType]));
@@ -20,8 +23,26 @@ const findAverage = (weatherData, measurementType) => {
 };
 
 export default function WeatherTableList() {
+  const dispatch = useDispatch();
+  // const cities = useSelector((state) => state.weather.cities);
+
   const { data, error, isError, isLoading } =
     useGetForecastDataQuery('Florida');
+
+  useEffect(() => {
+    if (!isLoading && !isError && data) {
+      const forecastData = {
+        city: data.city.name,
+        tempsArray: populateDataArrays(data, 'temp'),
+        avgTemp: findAverage(data, 'temp'),
+        pressureArray: populateDataArrays(data, 'pressure'),
+        avgPressure: findAverage(data, 'pressure'),
+        humidityArray: populateDataArrays(data, 'humidity'),
+        avgHumidity: findAverage(data, 'humidity'),
+      };
+      dispatch(addWeatherData(forecastData));
+    }
+  }, [dispatch, isLoading, isError, data]);
 
   console.log(data); // testing
 
@@ -47,15 +68,7 @@ export default function WeatherTableList() {
     );
   }
 
-  const forecastData = {
-    city: data.city.name,
-    tempsArray: populateDataArrays(data, 'temp'),
-    avgTemp: findAverage(data, 'temp'),
-    pressureArray: populateDataArrays(data, 'pressure'),
-    avgPressure: findAverage(data, 'pressure'),
-    humidityArray: populateDataArrays(data, 'humidity'),
-    avgHumidity: findAverage(data, 'humidity'),
-  };
+  console.log('test');
 
   // TODOS:
 
@@ -63,16 +76,11 @@ export default function WeatherTableList() {
   // 2. After forecast data is received, dispatch it to the citySearchReducer
   // 3. To render the data, loop through all the state from the citySearchReducer, and pass that data to WeatherTableItem.\
   // 4. Display data to page...
+  // 5. Function for handling search input
 
   // const renderData = () => {
   //   return <WeatherTableItem
   // }
 
-  console.log(forecastData); // testing
-
-  return (
-    <>
-      <WeatherTableItem />
-    </>
-  );
+  return <WeatherTableItem />;
 }
