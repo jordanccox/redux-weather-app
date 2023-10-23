@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { useEffect } from 'react';
-import { Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useGetForecastDataQuery } from '../weatherApi';
 import WeatherTableItem from './WeatherTableItem';
 import { addWeatherData } from '../reducers/weatherSlice';
@@ -33,7 +33,8 @@ export default function WeatherTableList() {
   const cities = useSelector((state) => state.weather.cities);
   const currentCity = useSelector((state) => state.weather.currentSearch);
 
-  const { data, isError, isLoading } = useGetForecastDataQuery(currentCity);
+  const { data, isError, isLoading, isFetching } =
+    useGetForecastDataQuery(currentCity);
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
@@ -57,15 +58,17 @@ export default function WeatherTableList() {
 
   const renderedCitiesList = renderData(cities);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <>
-        <Row>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
+        <Row className="justify-content-md-center">
+          <Col md="auto">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </Col>
         </Row>
-        {/* <div>{renderedCitiesList}</div> */}
+        <div>{renderedCitiesList}</div>
       </>
     );
   }
